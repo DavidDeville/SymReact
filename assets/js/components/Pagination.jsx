@@ -46,15 +46,14 @@ const Pagination = ({ currentPage, itemsPerPage, length, onPageChanged }) => {
 
 /**
  * Returns the customers sliced array
- * 
- * @param {object} items - the customers 
- * @param {integer} currentPage - the current page 
+ *
+ * @param {object} items - the customers
+ * @param {integer} currentPage - the current page
  * @param {integer} itemsPerPage - the number of items that will be displayed
  */
 Pagination.getData = (items, currentPage, itemsPerPage) => {
-    console.log(items);
-    const start = currentPage * itemsPerPage - itemsPerPage;
-    return items.slice(start, start + itemsPerPage);
-}
+  const start = currentPage * itemsPerPage - itemsPerPage;
+  return items.slice(start, start + itemsPerPage);
+};
 
 export default Pagination;

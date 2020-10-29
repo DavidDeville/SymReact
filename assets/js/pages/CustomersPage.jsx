@@ -23,7 +23,9 @@ const CustomersPage = (props) => {
   /**
    * Gets all customers on component loading
    */
-  useEffect( () => {fetchCustomers();}, []);
+  useEffect( () => {
+    fetchCustomers();
+  }, []);
 
   /**
    * Function that handles all the logic to delete a customer
