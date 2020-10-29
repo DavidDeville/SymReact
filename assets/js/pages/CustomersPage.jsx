@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Pagination from "../components/Pagination";
 import CustomersAPI from "../services/customersAPI";
-
+import { Link } from "react-router-dom";
 
 const CustomersPage = (props) => {
   const [customers, setCustomers] = useState([]);
@@ -13,17 +13,17 @@ const CustomersPage = (props) => {
    */
   const fetchCustomers = async () => {
     try {
-      const data = await CustomersAPI.findAll()
-      setCustomers(data)
-    } catch(error) {
-      console.log(error.response)
+      const data = await CustomersAPI.findAll();
+      setCustomers(data);
+    } catch (error) {
+      console.log(error.response);
     }
-  }
- 
+  };
+
   /**
    * Gets all customers on component loading
    */
-  useEffect( () => {
+  useEffect(() => {
     fetchCustomers();
   }, []);
 
@@ -39,8 +39,8 @@ const CustomersPage = (props) => {
     setCustomers(customers.filter((customer) => customer.id !== id));
 
     try {
-      await CustomersAPI.delete(id)
-    } catch(error) {
+      await CustomersAPI.delete(id);
+    } catch (error) {
       setCustomers(originalCustomers);
     }
   };
@@ -50,14 +50,14 @@ const CustomersPage = (props) => {
    *
    * @param {integer} page - the current page number
    */
-  const handlePageChanged = page => setCurrentPage(page);
+  const handlePageChanged = (page) => setCurrentPage(page);
 
   /**
    * Gets the current submitted value and sets it using the hook
    *
    * @param {object} event - current event
    */
-  const handleSearch = ({currentTarget}) => {
+  const handleSearch = ({ currentTarget }) => {
     setSearch(currentTarget.value);
     setCurrentPage(1);
   };
@@ -87,7 +87,10 @@ const CustomersPage = (props) => {
 
   return (
     <>
-      <h1>Liste des clients</h1>
+      <div className="mb-2 d-flex justify-content-between align-items-center">
+        <h1>Liste des clients</h1>
+        <Link to="/customers/new" className="btn btn-primary">Créer un client</Link>
+      </div>
 
       <div className="form-group">
         <input
@@ -144,13 +147,14 @@ const CustomersPage = (props) => {
         </tbody>
       </table>
 
-      {itemsPerPage < filteredCustomers.length && <Pagination
-        currentPage={currentPage}
-        itemsPerPage={itemsPerPage}
-        length={filteredCustomers.length}
-        onPageChanged={handlePageChanged}
-      />}
-      
+      {itemsPerPage < filteredCustomers.length && (
+        <Pagination
+          currentPage={currentPage}
+          itemsPerPage={itemsPerPage}
+          length={filteredCustomers.length}
+          onPageChanged={handlePageChanged}
+        />
+      )}
     </>
   );
 };

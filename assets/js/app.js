@@ -1,13 +1,17 @@
 // Important imports
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
-import {
-    HashRouter,
+import { HashRouter, Route, Switch, withRouter } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import PrivateRoute from "./components/PrivateRoute";
+import AuthContext from "./contexts/AuthContext";
+import CustomerPage from "./pages/CustomerPage";
+import CustomersPage from "./pages/CustomersPage";
+import HomePage from "./pages/HomePage";
+import InvoicesPage from "./pages/InvoicesPage";
+import LoginPage from "./pages/Loginpage";
+import authAPI from "./services/authAPI";
 
-    Route, Switch,
-
-    withRouter
-} from "react-router-dom";
 /*
  * Welcome to your app's main JavaScript file!
  *
@@ -16,22 +20,11 @@ import {
  */
 // any CSS you import will output into a single css file (app.css in this case)
 import "../css/app.css";
-import Navbar from "./components/Navbar";
-import PrivateRoute from "./components/PrivateRoute";
-import AuthContext from "./contexts/AuthContext";
-import CustomersPage from "./pages/CustomersPage";
-import HomePage from "./pages/HomePage";
-import InvoicesPage from "./pages/InvoicesPage";
-import LoginPage from "./pages/Loginpage";
-import authAPI from "./services/authAPI";
-
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to import it.
 // import $ from 'jquery';
 
 authAPI.setup();
-
-
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(
@@ -41,16 +34,19 @@ const App = () => {
   const NavbarWithRouter = withRouter(Navbar);
 
   return (
-    <AuthContext.Provider value={{
+    <AuthContext.Provider
+      value={{
         isAuthenticated,
         setIsAuthenticated,
-      }}>
+      }}
+    >
       <HashRouter>
         <NavbarWithRouter />
 
         <main className="container pt-5">
           <Switch>
             <Route path="/login" component={LoginPage} />
+            <PrivateRoute path="/customers/:id" component={CustomerPage} />
             <PrivateRoute path="/invoices" component={InvoicesPage} />
             <PrivateRoute path="/customers" component={CustomersPage} />
             <Route path="/" component={HomePage} />
